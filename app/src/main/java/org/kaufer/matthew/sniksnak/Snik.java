@@ -22,7 +22,7 @@ public class Snik {
         score = 0;
     }
 
-    public double[] getCoordinates(){
+    public List<Double> getCoordinates(){
         return coordinates;
     }
 
