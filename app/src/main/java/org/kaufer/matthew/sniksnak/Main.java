@@ -1,6 +1,10 @@
 package org.kaufer.matthew.sniksnak;
 
 import android.app.Activity;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +16,7 @@ import com.firebase.client.Firebase;
 
 public class Main extends Activity {
     Firebase sniks;
+    private Location lastLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +30,26 @@ public class Main extends Activity {
                 sniks.push().setValue(new Snik(new double[]{Math.random() * 100, Math.random() * 100}, "http://google.com","Hello World").toHashMap());
             }
         });
+
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                lastLocation = location;
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
+
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        //lastLocation is coordinate in Location form - if null, we haven't found a location yet
     }
 
 
