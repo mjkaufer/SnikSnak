@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.firebase.client.Firebase;
 
@@ -16,6 +18,13 @@ public class Main extends Activity {
         setContentView(R.layout.activity_main);
         Firebase.setAndroidContext(this);
         sniks = new Firebase("https://sniksnak.firebaseio.com/").child("sniks");
+        Button b = (Button)findViewById(R.id.button);
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sniks.push().setValue(new Snik(new double[]{Math.random() * 100, Math.random() * 100}, "http://google.com","Hello World").toHashMap());
+            }
+        });
     }
 
 
