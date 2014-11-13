@@ -44,6 +44,9 @@ public class Main extends Activity {
     AsyncHttpClient client = new AsyncHttpClient();
     TextView t;
 
+    private boolean safeToTakePicture = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,10 +56,15 @@ public class Main extends Activity {
         Button b = (Button)findViewById(R.id.button);
         Button c = (Button)findViewById(R.id.button2);
         t = (TextView)findViewById(R.id.textView);
-        camera = Camera.open();
+        camera = Camera.open(0);
+        Camera.CameraInfo ci = new android.hardware.Camera.CameraInfo();
+        Camera.getCameraInfo(0, ci);
+        System.out.println();
+        System.out.print(camera);
         c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                camera.stopPreview();
                 camera.startPreview();
                 camera.takePicture(null, null, new Camera.PictureCallback() {
                     @Override
@@ -88,6 +96,9 @@ public class Main extends Activity {
                         }
                     }
                 });
+
+                camera.stopPreview();
+
             }
         });
 
@@ -99,23 +110,23 @@ public class Main extends Activity {
             }
         });
 
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-
-        LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                // Called when a new location is found by the network location provider.
-                lastLocation = location;
-            }
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {}
-
-            public void onProviderEnabled(String provider) {}
-
-            public void onProviderDisabled(String provider) {}
-        };
-
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-        lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+//
+//        LocationListener locationListener = new LocationListener() {
+//            public void onLocationChanged(Location location) {
+//                // Called when a new location is found by the network location provider.
+//                lastLocation = location;
+//            }
+//
+//            public void onStatusChanged(String provider, int status, Bundle extras) {}
+//
+//            public void onProviderEnabled(String provider) {}
+//
+//            public void onProviderDisabled(String provider) {}
+//        };
+//
+//        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+//        lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
         //lastLocation is coordinate in Location form - if null, we haven't found a location yet
     }
