@@ -102,7 +102,7 @@ public class Main extends Activity {
                 //we're not going to do images because it's not fun...
 //                camera.stopPreview();
 
-                sniks.push().setValue(new Snik(new double[]{Math.random() * 100, Math.random() * 100}, "http://google.com",et.getText().toString()).toHashMap());
+                sniks.push().setValue(new Snik(new double[]{Math.random() * 100, Math.random() * 100}, et.getText().toString()).toHashMap());
 
 
             }
@@ -112,7 +112,7 @@ public class Main extends Activity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sniks.push().setValue(new Snik(new double[]{Math.random() * 100, Math.random() * 100}, "http://google.com","Hello World").toHashMap());
+                sniks.push().setValue(new Snik(new double[]{Math.random() * 100, Math.random() * 100}, "Hello World").toHashMap());
             }
         });
 
