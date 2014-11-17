@@ -8,20 +8,12 @@ import java.util.List;
  * Created by 2016mkaufer on 11/10/2014.
  */
 public class Snik {
-    List<Double> coordinates;//TODO - MAKE COORDINATES A LIST SO WE CAN PASS IT IN THE HASHMAP
     String text;
     int score;
 
-    public Snik(double[] coord, String t){
-        coordinates = new LinkedList<Double>();//we make it a list because firebase likes lists more than arrays, apparently
-        coordinates.add(0,coord[0]);
-        coordinates.add(1,coord[0]);
+    public Snik(String t){
         text = t;
         score = 0;
-    }
-
-    public List<Double> getCoordinates(){
-        return coordinates;
     }
 
 
@@ -37,7 +29,6 @@ public class Snik {
         HashMap<String, Object> s = new HashMap<String, Object>();
         s.put("text",text);
         s.put("score",score);
-        s.put("coordinates",coordinates);
         return s;
     }
 }

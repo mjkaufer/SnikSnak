@@ -2,6 +2,7 @@ package org.kaufer.matthew.sniksnak;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -43,7 +44,7 @@ public class Main extends Activity {
     private Camera camera;
     private ImageView imgView;
     AsyncHttpClient client = new AsyncHttpClient();
-    TextView t;
+    TextView t, feedback;
     EditText et;
 
     private boolean safeToTakePicture = false;
@@ -57,13 +58,9 @@ public class Main extends Activity {
         sniks = new Firebase("https://sniksnak.firebaseio.com/").child("sniks");
         Button b = (Button)findViewById(R.id.button);
         Button c = (Button)findViewById(R.id.button2);
-        t = (TextView)findViewById(R.id.textView);
+//        t = (TextView)findViewById(R.id.textView);
         et = (EditText)findViewById(R.id.editText);
-        camera = Camera.open(0);
-        Camera.CameraInfo ci = new android.hardware.Camera.CameraInfo();
-        Camera.getCameraInfo(0, ci);
-        System.out.println();
-        System.out.print(camera);
+        feedback = (TextView)findViewById(R.id.feedback);
         c.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,20 +98,35 @@ public class Main extends Activity {
 //                });
                 //we're not going to do images because it's not fun...
 //                camera.stopPreview();
+                if(et.getText().toString().length() < 150) {
+                    sniks.push().setValue(new Snik(et.getText().toString()).toHashMap());
+                    feedback.setText("Successfully posted");
+                }else
+                    feedback.setText("Too long - not posted");
+                //theoretically, we should check serverside, but it's trivial
+                et.setText("");
 
-                sniks.push().setValue(new Snik(new double[]{Math.random() * 100, Math.random() * 100}, et.getText().toString()).toHashMap());
 
 
             }
         });
-
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sniks.push().setValue(new Snik(new double[]{Math.random() * 100, Math.random() * 100}, "Hello World").toHashMap());
+                Intent intent = new Intent(getApplicationContext(), SnikList.class);
+                startActivity(intent);
+
             }
         });
+
+//
+//        b.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                sniks.push().setValue(new Snik("Hello World").toHashMap());
+//            }
+//        });
 
 //        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 //
